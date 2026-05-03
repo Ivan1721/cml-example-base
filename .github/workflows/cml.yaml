@@ -7,13 +7,12 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
       - uses: iterative/setup-cml@v1
-      - name: Train model
-        env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Pull data from DVC remote
         run: |
           dvc pull
-      - name: Install dependencies and train model
+      - name: Train model
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           pip install -r requirements.txt
           
