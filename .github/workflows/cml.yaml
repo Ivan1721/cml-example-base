@@ -28,7 +28,7 @@ jobs:
           pip install "dvc[gdrive]"
           pip install -r requirements.txt
 
-            - name: Configure DVC Google Drive service account
+      - name: Configure DVC Google Drive service account
         env:
           GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
         run: |
