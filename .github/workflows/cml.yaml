@@ -10,8 +10,13 @@ jobs:
       - name: Train model
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Pull data from DVC remote
+        run: |
+          dvc pull
+      - name: Install dependencies and train model
         run: |
           pip install -r requirements.txt
+          
           python train.py
 
           cat metrics.txt >> report.md
