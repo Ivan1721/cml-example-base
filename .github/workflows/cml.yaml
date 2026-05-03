@@ -31,10 +31,15 @@ jobs:
       - name: Pull data from DVC remote
         run: |
           dvc pull
-      - name: Configure DVC Google Drive auth
-        run: |
-          dvc remote modify --local gdriveremote gdrive_client_id "${{ secrets.GDRIVE_CLIENT_ID }}"
-          dvc remote modify --local gdriveremote gdrive_client_secret "${{ secrets.GDRIVE_CLIENT_SECRET }}"
+      - name: Configure DVC Google Drive service account
+          env:
+            GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+          run: |
+            mkdir -p .dvc/tmp
+            echo "$GDRIVE_CREDENTIALS_DATA" > .dvc/tmp/gdrive-service-account.json
+            dvc remote modify --local gdriveremote gdrive_use_service_account true
+            dvc remote modify --local gdriveremote gdrive_service_account_json_file_path .dvc/tmp/gdrive-service-account.json
+
       - name: Train model
         run: |
           python train.py
